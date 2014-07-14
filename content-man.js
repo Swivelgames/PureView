@@ -12,6 +12,7 @@ var ViewContentManager = (function(){
 					delete this[x];
 					continue;
 				}
+
 				var param = this.__params[x],
 					newValue = this[x];
 
@@ -41,7 +42,7 @@ var ViewContentManager = (function(){
 				"node": node,
 				"value": val,
 				"isAttrChild": isAttrChild ? true : false,
-				"controller": new ContentBind(node, val, function(){
+				"controller": new ViewContentItem(node, val, function(){
 					var thisParam = that.__params[name];
 
 					if(thisParam.isAttrChild) {
