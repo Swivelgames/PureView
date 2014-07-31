@@ -31,7 +31,7 @@ wait $!
 git checkout -b $RELEASE_BRANCH
 $BIN_DIR/compile.sh
 wait $!
-git rm -f "$GIT_DIR/content-item.js" "$GIT_DIR/content-man.js" "$GIT_DIR/view.js"
+git rm -f "$GIT_DIR/view-model-prop.js" "$GIT_DIR/view-model.js" "$GIT_DIR/view.js"
 git rm -r -f $BIN_DIR
 git add "$GIT_DIR/pure-view.min.js"
 git commit -m "AUTO: Compiled and prepared repository for $NVERSION release"

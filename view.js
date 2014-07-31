@@ -15,7 +15,7 @@ var View = (function(){
 		this.data = Data || {};
 
 		// Initialize content item mananger
-		this.content = new ViewContentManager();
+		this.content = new ViewModel();
 
 		// Render view
 		this.render();
