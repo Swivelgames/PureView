@@ -37,7 +37,8 @@ git add "$GIT_DIR/pure-view.min.js"
 git commit -m "AUTO: Compiled and prepared repository for $NVERSION release"
 if [ "$CANDIDATE" == "false" ]; then
 	git checkout master;
-	git merge --no-ff -m "AUTO: Merging $RELEASE_BRANCH branch for version $NVERSION" $RELEASE_BRANCH -X theirs;
+	git merge --no-ff --no-commit $RELEASE_BRANCH -X theirs;
+	git commit -a -m "AUTO: Merging $RELEASE_BRANCH branch for version $NVERSION";
 	git branch -D $RELEASE_BRANCH;
 fi
 git tag -a $NVERSION
