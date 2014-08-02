@@ -13,11 +13,15 @@ var ViewModel = (function(){
 					continue;
 				}
 
-				var param = this.__params[x],
+				var paramArr = this.__params[x],
 					newValue = this[x];
 
-				if(param.value != newValue) {
-					param.controller.set(newValue);
+				for(var i=0;i<paramArr.length;i++) {
+					var param = paramArr[i];
+
+					if(param.value != newValue) {
+						param.controller.set(newValue);
+					}
 				}
 			}
 		}).call(that)},10);
@@ -35,41 +39,39 @@ var ViewModel = (function(){
 		},
 
 		newItem: function(node, name, val, isAttrChild){
-			delete this[name];
+			if(!this.__params[name]) this.__params[name] = [];
 
-			var that = this;
-			this.__params[name] = {
+			var that = this,
+				paramArr = this.__params[name],
+
+			thisParam = {
 				"node": node,
 				"value": val,
-				"isAttrChild": isAttrChild ? true : false,
-				"controller": new ViewModelProperty(node, val, function(){
-					var thisParam = that.__params[name];
-
-					if(thisParam.isAttrChild) {
-						thisParam.attributeValue = thisParam.attribute.nodeValue;
-					}
-
-					thisParam.value = this.get();
-				})
+				"isAttrChild": isAttrChild ? true : false
 			};
 
-			if(isAttrChild!==null) {
-				var thisParam = this.__params[name];
+			thisParam.controller = new ViewModelProperty(node, val, function(){
+				var thisParam = that.__params[name];
 
+				if(thisParam.isAttrChild) {
+					thisParam.attributeValue = thisParam.attribute.nodeValue;
+				}
+
+				thisParam.value = this.get();
+			});
+
+			if(isAttrChild!==null) {
 				thisParam.attribute = isAttrChild;
-				thisParam.attributeValue = isAttrChild.nodeValue;
 
 				thisParam.__attrWatch = setInterval(function(){
 					if(!thisParam.attribute || !thisParam.attribute.nodeValue || !thisParam.attribute.ownerElement) {
 						clearInterval(thisParam.__attrWatch);
 						console.error("Parent attribute for content item `"+name+"` has been removed");
 					}
-
-					if(thisParam.attribute.nodeValue != thisParam.attributeValue) {
-						console.error("DOM attribute modified outside of View; Content item bind lost for `"+name+"`");
-					}
 				},100);
 			}
+
+			paramArr.push(thisParam);
 
 			this[name] = val;
 		}

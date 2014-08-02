@@ -105,7 +105,7 @@ var View = (function(){
 			// Iterate through new nodes
 			for(var x=0;x<split.length;x++) {
 				// If x is odd number, process next match
-				if(x%2 && x>0) {
+				if(x>0) {
 					var match = matches[x-1],
 						matchLen = match.length,
 						matchName = match.substring(3,matchLen-2), // Cut out '{{$' and '}}' from match
